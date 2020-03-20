@@ -23,7 +23,7 @@ class SeqList: public List <elemType>
         elemType *data;
         int currentLength;
         int maxSize;
-        void doubleSpace(); // extend the present list, Dynamically
+        void doubleSpace(void); // extend the present list, Dynamically
     public:
         SeqList(int initSize=30); //construction
         ~SeqList(){delete [] data;} //deconstruction, data is allocated from heap
@@ -129,7 +129,7 @@ void SeqList <elemType>:: remove(int i)
         return;
     }
     for(j=i;j<currentLength-1;j++)
-        data[i] = data[i+1];
+        data[j] = data[j+1];
     currentLength--;
 }
 

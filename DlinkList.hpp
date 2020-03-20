@@ -9,59 +9,79 @@
     #include "List.hpp"
 #endif
 
-/* This is source code for implementation of linked list, 
+/* This is source code for implementation of doubly linked list, 
     utilize the templated class with some member functions */
 
 
-// link list declaration
 template <class elemType>
-class LinkList: public List <elemType>
+class DlinkList: public List <elemType>
 {
     private:
         struct Node
         {
             elemType data;
-            Node *next;
-            // initialization function: 2 cases
-            Node(const elemType &x, Node *n = NULL)
-                {data = x; next = n;}
-            Node(void):next(NULL){}
-
+            Node *prior, *next;
+            // init function
+            Node(const elemType &x, Node *p=NULL, Node *n=NULL)
+                {data = x; next = n; prior = p;}
+            Node(void):prior(NULL),next(NULL){}
             ~Node(){}
-        };
-        Node *head;// head Node, with no data stored
-        int currentLength; // for convenience
-    public:
-        LinkList(void); //construction
-        ~LinkList(){clear(); delete head;} //deconstruction, data is allocated from heap
-        int length(void) const;
-        int index(const elemType &x)  const;
-        elemType visit(int i)  const;
+        }
+        Node *head, *tail;
+        int currentLength; // essential in dlinklist
+        Node *move(int i) const // general operation
+        {
+            Node *p;
+            int j = 0;
+            if( 0 <= i < currentLength/2)
+            {
+                Node *p = head->next;
+                for(j=0;j<i;j++)
+                    p = p->next;
+            }
+            else if(currentLength/2 <= i < currentLength)
+            {
+                Node *p = tail->prior;
+                for(j=currentLength-1;j>i;j++)
+                    p = p->prior;
+            }
+            else
+            {
+                throw OutOfBound();
+                return;
+            }
+            return p;
+        }
+    public: 
+        DlinkList(void);
+        ~DlinkList(){clear(); delete head; delete tail;} // delete both head and tail
+        void clear(void);
+        int length(void) const {return currentLength;}
         void insert(int i, const elemType &x);
         void remove(int i);
-        void clear(void); // free all the non-head Node
+        int index(const elemType &x) const;
+        elemType visit(int i) const;
         void traverse(void) const;
 };
 
-
-/* Specific member functions of LinkList*/
+/* Specific member functions of DlinkList*/
 
 template <class elemType>
-LinkList <elemType>:: LinkList(void)
+DlinkList <elemType>:: DlinkList(void)
 {
     head = new Node(); // allocate an empty head-linkNode and let head point to it
     currentLength = 0; //counting initialization, head is not included
 }
 
 template <class elemType>
-int LinkList <elemType>:: length(void) const
+int DlinkList <elemType>:: length(void) const
 {
     return currentLength;
 }
 
 /* for link list, the index also starts from "0" as the 1st linkNode */
 template <class elemType>
-int LinkList <elemType>:: index(const elemType &x) const
+int DlinkList <elemType>:: index(const elemType &x) const
 {
     int count = 0;
     Node *p = head->next; // now p is at 1st Node(if not NULL)
@@ -75,29 +95,21 @@ int LinkList <elemType>:: index(const elemType &x) const
 }
 
 template <class elemType>
-elemType LinkList <elemType>:: visit(int i) const
+elemType DlinkList <elemType>:: visit(int i) const
 {
-    int j = 0;
-    Node *p = head->next;
-    for(j=0;j<i;j++)
-       p = p->next;
-    
+    Node *p = move(i);
     return p->data;
 }
 
 template <class elemType>
-void LinkList <elemType>:: insert(int i, const elemType &x)
+void DlinkList <elemType>:: insert(int i, const elemType &x)
 {
     if(i> currentLength || i< 0)// check it
     {
         throw OutOfBound();
         return;
     }
-
-    int j = 0;
-    Node *p = head;
-    for(j=0;j<i;j++)
-       p = p->next;
+    Node *p = move(i);
 
     Node *tmp = new Node();
     tmp->data = x;
@@ -108,7 +120,7 @@ void LinkList <elemType>:: insert(int i, const elemType &x)
 }
 
 template <class elemType>
-void LinkList <elemType>:: remove(int i)
+void DlinkList <elemType>:: remove(int i)
 {
     if(i>= currentLength || i< 0)// check it
     {
@@ -116,10 +128,7 @@ void LinkList <elemType>:: remove(int i)
         return;
     }
 
-    int j = 0;
-    Node *p = head;
-    for(j=0;j<i;j++)
-       p = p->next;
+    Node *p = move(i);
 
     Node *tmp = new Node();
     tmp = (p->next)->next;
@@ -131,7 +140,7 @@ void LinkList <elemType>:: remove(int i)
 }
 
 template <class elemType>
-void LinkList <elemType>:: clear(void)
+void DlinkList <elemType>:: clear(void)
 {
     Node *p = head->next;
     Node *tmp;
@@ -146,7 +155,7 @@ void LinkList <elemType>:: clear(void)
 }
 
 template <class elemType>
-void LinkList <elemType>:: traverse(void) const
+void DlinkList <elemType>:: traverse(void) const
 {
     Node *p = head->next;
     cout << "[";
