@@ -26,29 +26,29 @@ class DlinkList: public List <elemType>
                 {data = x; next = n; prior = p;}
             Node(void):prior(NULL),next(NULL){}
             ~Node(){}
-        }
+        };
         Node *head, *tail;
         int currentLength; // essential in dlinklist
+
         Node *move(int i) const // general operation
         {
-            Node *p;
+            Node *p = NULL;
             int j = 0;
-            if( 0 <= i < currentLength/2)
+            if( (0 <= i)&&(i <= currentLength/2) )
             {
-                Node *p = head->next;
-                for(j=0;j<i;j++)
+                p = head;
+                for(j=0;j<=i;j++)
                     p = p->next;
             }
-            else if(currentLength/2 <= i < currentLength)
+            else if( (currentLength/2 < i) && (i <= currentLength) )
             {
-                Node *p = tail->prior;
-                for(j=currentLength-1;j>i;j++)
+                p = tail;
+                for(j=currentLength-1;j>=i;j--)
                     p = p->prior;
             }
             else
             {
                 throw OutOfBound();
-                return;
             }
             return p;
         }
@@ -70,13 +70,10 @@ template <class elemType>
 DlinkList <elemType>:: DlinkList(void)
 {
     head = new Node(); // allocate an empty head-linkNode and let head point to it
+    tail = new Node();
+    head->next = tail;
+    tail->prior = head;
     currentLength = 0; //counting initialization, head is not included
-}
-
-template <class elemType>
-int DlinkList <elemType>:: length(void) const
-{
-    return currentLength;
 }
 
 /* for link list, the index also starts from "0" as the 1st linkNode */
@@ -104,17 +101,24 @@ elemType DlinkList <elemType>:: visit(int i) const
 template <class elemType>
 void DlinkList <elemType>:: insert(int i, const elemType &x)
 {
-    if(i> currentLength || i< 0)// check it
+    if( (i > currentLength) || (i < 0))// check it
     {
         throw OutOfBound();
         return;
-    }
+    }  
     Node *p = move(i);
 
     Node *tmp = new Node();
     tmp->data = x;
-    tmp->next = p->next;
-    p->next = tmp;
+
+    // inlist
+    tmp->prior = p->prior;
+    tmp->next = p;
+    
+    // adjust 
+    (tmp->prior)->next = tmp;
+    p->prior = tmp;
+    
     //update
     currentLength++;
 }
@@ -122,7 +126,7 @@ void DlinkList <elemType>:: insert(int i, const elemType &x)
 template <class elemType>
 void DlinkList <elemType>:: remove(int i)
 {
-    if(i>= currentLength || i< 0)// check it
+    if( (i > currentLength) || (i < 0))// check it
     {
         throw OutOfBound();
         return;
@@ -130,10 +134,11 @@ void DlinkList <elemType>:: remove(int i)
 
     Node *p = move(i);
 
-    Node *tmp = new Node();
-    tmp = (p->next)->next;
-    delete p->next;
-    p->next = tmp;
+    (p->prior)->next = p->next;
+    (p->next)->prior = p->prior;
+
+    delete p;
+
     //update
     currentLength--;
 
@@ -151,6 +156,10 @@ void DlinkList <elemType>:: clear(void)
         p = p->next;
         delete tmp;
     }
+    tail = new Node();
+    head->next = tail;
+    tail->prior = head;
+    currentLength = 0;
 
 }
 
@@ -159,11 +168,12 @@ void DlinkList <elemType>:: traverse(void) const
 {
     Node *p = head->next;
     cout << "[";
-    while(p)
+    while(p!=tail)
     {
         cout << p->data<< " ";
         p = p->next;
     }
     cout << "]" << endl;
 }
+
 

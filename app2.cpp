@@ -29,7 +29,7 @@ bool operator==(const Term &A, const Term &B)
 
 bool operator!=(const Term &A, const Term &B)
 {
-    return ( (A.coef != B.coef) || (A.exp != B.exp) ) ;
+    return ( (A.coef != B.coef) || (A.exp != B.exp) );
 }
 
 template <class elemType>
@@ -182,7 +182,7 @@ void Polynomial <elemType>:: dispPloy(void) const
             if((p->data).coef >= 0)
                 cout << (p->data).coef;   
             else if((p->data).coef < 0)
-                cout << "- "<< -(p->data).coef;
+                cout << " - "<< -(p->data).coef;
             return;
         }
         else if((p->data).exp == 1)
@@ -192,9 +192,9 @@ void Polynomial <elemType>:: dispPloy(void) const
             else if((p->data).coef == 1)
                 cout << 'x';
             else if((p->data).coef == -1)
-                cout << "- " << 'x' << '^' << (p->data).exp;    
+                cout << " - " << 'x' << '^' << (p->data).exp;    
             else if((p->data).coef < 0)
-                cout << "- " << -(p->data).coef << 'x';
+                cout << " - " << -(p->data).coef << 'x';
         }
         else
         {
@@ -203,9 +203,9 @@ void Polynomial <elemType>:: dispPloy(void) const
             else if((p->data).coef == 1)
                 cout << 'x' << '^' << (p->data).exp;
             else if((p->data).coef == -1)
-                cout << "- " << 'x' << '^' << (p->data).exp;    
+                cout << " - " << 'x' << '^' << (p->data).exp;    
             else if((p->data).coef < 0)
-                cout << "- " << -(p->data).coef << 'x' << '^' << (p->data).exp;
+                cout << " - " << -(p->data).coef << 'x' << '^' << (p->data).exp;
         }
 
     // traverse the rest of the polynomial
