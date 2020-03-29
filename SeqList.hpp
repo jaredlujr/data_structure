@@ -40,7 +40,7 @@ class SeqList: public List <elemType>
 /* Specific member functions of SeqList*/
 
 template <class elemType>
-SeqList <elemType>:: SeqList(int initSize) // initSize has been defined as 30, here is the interface
+SeqList <elemType>:: SeqList(int initSize) // initSize has been DEFINED as 30, here is the interface
 {
     //impilit writing "this" pointer
     data = new elemType[initSize];

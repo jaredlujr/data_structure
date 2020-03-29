@@ -10,7 +10,7 @@ class OutOfBound: public exception
 {
     const char *what(void) const throw() // what is the common method of exception class, it return the cause of error
     {
-        return "[ERROR]Your visit is out of the maximum size of list!";
+        return "[ERROR]Your visit is out of the maximum size of list!\n";
     }
 };
 
@@ -18,7 +18,7 @@ class IllegalSize: public exception
 {
     const char *what(void) const throw()
     {
-        return "[ERROR]Allocating memory failed.Illegal Size arises!";
+        return "[ERROR]Allocating memory failed.Illegal Size arises!\n";
     }
 };
 
