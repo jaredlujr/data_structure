@@ -1,12 +1,11 @@
 /*
 Application of stack:
-    TO DESCRIBE A STACK-LIKE PROBLEM, like function call.
-
-    GOAL: Use stack to simulate the operation of expression evaluation.  At most + - * / and parenthesis () involed
+    GOAL: Use stack to simulate the operation of expression evaluation.  
+    At most + - * / and parenthesis () involed
  */
 
-#include "SeqStack.hpp"
-#include "LinkStack.hpp"
+#include "seq_stack.hpp"
+#include "link_stack.hpp"
 
 
 // input: sufstring including 0-9 + _ * /, parenthesis-free 
@@ -49,6 +48,7 @@ int calcPost(char *sufStr)
 
 // in-expression transformation into suf-expression, as string
 // read is sequential 
+// 
 void inTosuf(char *inStr, char *sufStr)
 {
     LinkStack<char> s; //using operator stack

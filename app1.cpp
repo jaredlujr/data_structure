@@ -7,7 +7,7 @@ An simple application of sequential list and linked list
 
 
 // #include "SeqList.hpp" 
-#include "LinkList.hpp"
+#include "link_list.hpp"
 
 // 
 

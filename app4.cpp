@@ -3,7 +3,7 @@ Application of stack:
     Raliway station management.
  */
 
-#include "SeqStack.hpp"
+#include "seq_stack.hpp"
 
 /*main function*/
 
